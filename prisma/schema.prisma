@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id // Clerk User ID
+  name      String?
+  createdAt DateTime @default(now())
+  months    Month[]
+}
+
+model Month {
+  id          String             @id @default(cuid())
+  userId      String
+  name        String             // e.g. "Mes 1"
+  createdAt   DateTime           @default(now())
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  routines    Routine[]
+  completions WeeklyCompletion[]
+}
+
+model Routine {
+  id          String             @id @default(cuid())
+  monthId     String
+  name        String             // e.g. "Día 1"
+  createdAt   DateTime           @default(now())
+  month       Month              @relation(fields: [monthId], references: [id], onDelete: Cascade)
+  exercises   Exercise[]
+  completions WeeklyCompletion[]
+}
+
+model Exercise {
+  id          String   @id @default(cuid())
+  routineId   String
+  name        String
+  sets        Int
+  reps        String
+  muscleGroup String   // e.g. "Pecho"
+  routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
+}
+
+model WeeklyCompletion {
+  id         String   @id @default(cuid())
+  monthId    String
+  weekId     String   // "w1", "w2", "w3", "w4"
+  routineId  String
+  completed  Boolean  @default(false)
+  month      Month    @relation(fields: [monthId], references: [id], onDelete: Cascade)
+  routine    Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
+
+  @@unique([monthId, weekId, routineId])
+}

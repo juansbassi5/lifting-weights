@@ -1,4 +1,5 @@
 import { Dumbbell, Plus, Sun, Moon, User } from "lucide-react";
+import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
 
 interface SidebarProps {
   currentView: "dashboard" | "create" | "edit";
@@ -59,14 +60,30 @@ export default function Sidebar({
       </nav>
 
       {/* User Footer section in Sidebar */}
-      <div className="user-footer mt-auto pt-4 border-t border-[var(--border-color)]">
-        <div className="avatar flex-shrink-0">
-          <User className="h-4 w-4 text-white" />
-        </div>
-        <div className="user-info truncate">
-          <h4>Mi Perfil</h4>
-          <p>Planificación Personal</p>
-        </div>
+      <div className="user-footer mt-auto pt-4 border-t border-[var(--border-color)] flex flex-col items-stretch gap-3">
+        <Show when="signed-out">
+          <div className="flex flex-col gap-2 w-full">
+            <SignInButton mode="modal">
+              <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all cursor-pointer shadow-xs border-0">
+                Iniciar Sesión
+              </button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold bg-[var(--bg-card)] hover:bg-[var(--bg-card-hover)] text-[var(--text-main)] rounded-lg border border-[var(--border-color)] transition-all cursor-pointer">
+                Registrarse
+              </button>
+            </SignUpButton>
+          </div>
+        </Show>
+        <Show when="signed-in">
+          <div className="flex items-center gap-3.5 w-full">
+            <UserButton />
+            <div className="user-info truncate">
+              <h4>Mi Perfil</h4>
+              <p>Planificación Personal</p>
+            </div>
+          </div>
+        </Show>
       </div>
     </aside>
   );

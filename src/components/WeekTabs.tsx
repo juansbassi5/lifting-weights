@@ -17,12 +17,11 @@ export default function WeekTabs({ selectedWeekId, setSelectedWeekId }: WeekTabs
         <button
           key={w.id}
           onClick={() => setSelectedWeekId(w.id)}
-          className={`flex-1 px-4 text-sm font-extrabold tracking-wider rounded-lg border transition-all cursor-pointer text-center ${
+          className={`flex-1 h-9 px-4 text-sm font-extrabold tracking-wider rounded-lg border transition-all cursor-pointer text-center flex items-center justify-center ${
             selectedWeekId === w.id
               ? "bg-[var(--primary-glow)] border-[var(--primary)] text-[var(--primary)] shadow-sm"
               : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-main)]"
           }`}
-          style={{ paddingTop: "70px", paddingBottom: "70px" }}
         >
           {w.name}
         </button>
